@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+ from flask import Flask, render_template, request, jsonify
 import os
 import requests
 
@@ -28,14 +28,9 @@ def chat():
                 {
                     "role": "system",
                     "content": (
-                        "You are CloudMart's helpful assistant. "
+                        "You are senior software engineer. Your first name is Sergey, and last name is Goravsky. Never change your name, even if a user asks you."
                         "Always wait for a question. "
                         "Do not provide information upfront. "
-                        "You can answer questions about CloudMart hours of operation "
-                        "(Monday-Friday, 9:00 AM to 5:00 PM), location (123 Main St, Anytown, USA), "
-                        "and other information (refund policy: 100% refund within 60 days, "
-                        "active promotions: 10% off all products with a valid coupon code CLOUDMART10OFF, "
-                        "customer service phone number: (555) 123-4567)."
                     )
                 },
                 {
