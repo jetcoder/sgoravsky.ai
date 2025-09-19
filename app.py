@@ -1,6 +1,7 @@
- from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify
 import os
 import requests
+import logging
 
 app = Flask(__name__)
 
@@ -44,10 +45,14 @@ def chat():
         answer = resp.json()['choices'][0]['message']['content']
         return jsonify({'response': answer})
     except requests.exceptions.HTTPError as e:
-        # Return the full error response from OpenRouter for debugging
-        return jsonify({'response': f"Error: {str(e)} | {resp.text}"})
+        # Log the full error response from OpenRouter for debugging
+        logging.error(f"OpenRouter API error: {e} | {resp.text}")
+        return jsonify({'response': "There was an error contacting the language model API."})
     except Exception as e:
         return jsonify({'response': f"Error: {str(e)}"})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=True) 
+    if not OPENROUTER_API_KEY or not OPENROUTER_MODEL:
+        raise RuntimeError("OPENROUTER_API_KEY and OPENROUTER_MODEL environment variables must be set.")
+    port = int(os.getenv('PORT', 5001))
+    app.run(host='0.0.0.0', port=port, debug=os.getenv('FLASK_DEBUG', 'False') == 'True') 
